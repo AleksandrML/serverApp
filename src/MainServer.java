@@ -16,6 +16,8 @@ public class MainServer {
                 System.out.println("New connection accepted");
                 final String name = in.readLine();
                 out.println(String.format("Hi %s, your port is %d", name, clientSocket.getPort()));
+                out.close();
+                in.close();
             }
         }
 
