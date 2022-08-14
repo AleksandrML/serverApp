@@ -8,16 +8,18 @@ import java.net.Socket;
 public class MainServer {
 
     public static void main(String[] args) throws IOException {
-        while (true) {
-            try (ServerSocket serverSocket = new ServerSocket(8080);
-                 Socket clientSocket = serverSocket.accept(); // ждем подключения
-                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
-                 ) {
+        try (ServerSocket serverSocket = new ServerSocket(8080)) {
+            while (true) {
+                Socket clientSocket = serverSocket.accept(); // ждем подключения
+
+                try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                     BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
+                ) {
                     System.out.println("New connection accepted");
                     final String name = in.readLine();
                     out.println(String.format("Hi %s, your port is %d", name, clientSocket.getPort()));
                 }
+            }
         }
     }
 
